@@ -13,55 +13,26 @@ public class SplitDBF
       RandomAccessFile file = new RandomAccessFile(filename,"r");
 
       byte[] buffer = new byte[(int) file.length()]; //array to store data
-      int[] tempOffset = new int[20];
+      int[] tempOffset = new int[7];
 
       //read the file
       file.readFully(buffer);
 
-      //close the file
-      file.close();
-
-      //find each offset and store each in offsets array
-    
-      /*for (int i = 1; i < offsets.length; i++) {
-         System.out.println("first new is: " + (offsets[i-1] + 8));
-         offsets[i] = buffer[offsets[i - 1] + 8] + buffer[offsets[i - 1] + 9] + buffer[offsets[i - 1] + 10] + buffer[offsets[i - 1] + 11];
-      }*/
-
       //for each file
       int j = 0;
       for (int i = 0; i < buffer.length; i++) {
-         if (buffer[i] == 3) {
-            tempOffset[j] = i;
-            j++;
+         if (buffer[i] == 3 && buffer[i + 30] == 0 && buffer[i + 31] == 0) {
+            System.out.println(i);
+            offsets[j++] = i;
          }
       }
 
-      for (int i = 0; i < tempOffset.length; i++) {
-         if (i % 2 == 0) {
-            System.out.println(tempOffset[i]);
-         }
-      }
+      //set the last offset
+      offsets[7] = (int) file.length() - 1;
 
-      /*offsets[0] = 0;
-      for (int i = 1; i < offsets.length; i++) {
-         System.out.println("previous offset was: " + offsets[i - 1]);
-         //find the length of the header in each file
-         int headerLength = buffer[offsets[i - 1] + 8] + buffer[offsets[i - 1] + 9];
+       //close the file
+      file.close();
 
-         //find the length and number of records in each file
-         int recordLength = buffer[offsets[i - 1] + 10] + buffer[offsets[i - 1] + 11];
-         int numRecords = buffer[offsets[i - 1] + 4] + buffer[offsets[i - 1] + 7];
-
-         //find entire record length and assign as the new offset
-         offsets[i] = headerLength + recordLength * numRecords;
-      }*/
-
-      
-
-
-
-    
       return buffer;
    }
 
