@@ -13,27 +13,55 @@ public class SplitDBF
       RandomAccessFile file = new RandomAccessFile(filename,"r");
 
       byte[] buffer = new byte[(int) file.length()]; //array to store data
-      int[] keyIndeces = {8,9,10,11}; 
+      int[] tempOffset = new int[20];
 
       //read the file
       file.readFully(buffer);
 
-      System.out.println("9 is " + buffer[10]);
-
-      //find each offset and store each in offsets array
-      offsets[0] = 0;
-
-      for (int i = 1; i < offsets.length; i++) {
-         System.out.println("i=" +i);
-         offsets[i] = buffer[offsets[i - 1] + 8] + buffer[offsets[i - 1] + 9] + buffer[offsets[i - 1] + 10] + buffer[offsets[i - 1] + 11];
-         System.out.println("offset of i =" + offsets[i] + "\n");  
-      }
-      
-      
-
-
       //close the file
       file.close();
+
+      //find each offset and store each in offsets array
+    
+      /*for (int i = 1; i < offsets.length; i++) {
+         System.out.println("first new is: " + (offsets[i-1] + 8));
+         offsets[i] = buffer[offsets[i - 1] + 8] + buffer[offsets[i - 1] + 9] + buffer[offsets[i - 1] + 10] + buffer[offsets[i - 1] + 11];
+      }*/
+
+      //for each file
+      int j = 0;
+      for (int i = 0; i < buffer.length; i++) {
+         if (buffer[i] == 3) {
+            tempOffset[j] = i;
+            j++;
+         }
+      }
+
+      for (int i = 0; i < tempOffset.length; i++) {
+         if (i % 2 == 0) {
+            System.out.println(tempOffset[i]);
+         }
+      }
+
+      /*offsets[0] = 0;
+      for (int i = 1; i < offsets.length; i++) {
+         System.out.println("previous offset was: " + offsets[i - 1]);
+         //find the length of the header in each file
+         int headerLength = buffer[offsets[i - 1] + 8] + buffer[offsets[i - 1] + 9];
+
+         //find the length and number of records in each file
+         int recordLength = buffer[offsets[i - 1] + 10] + buffer[offsets[i - 1] + 11];
+         int numRecords = buffer[offsets[i - 1] + 4] + buffer[offsets[i - 1] + 7];
+
+         //find entire record length and assign as the new offset
+         offsets[i] = headerLength + recordLength * numRecords;
+      }*/
+
+      
+
+
+
+    
       return buffer;
    }
 
