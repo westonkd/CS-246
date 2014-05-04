@@ -1,3 +1,9 @@
+/*******************************************
+* Name: Weston Dransfield
+* Collaborators:
+* Rafael Hernandez, Cameron Thomas
+*******************************************/
+
 
 import java.io.RandomAccessFile;
 
@@ -22,7 +28,6 @@ public class SplitDBF
       int j = 0;
       for (int i = 0; i < buffer.length; i++) {
          if (buffer[i] == 3 && buffer[i + 30] == 0 && buffer[i + 31] == 0) {
-            System.out.println(i);
             offsets[j++] = i;
          }
       }
