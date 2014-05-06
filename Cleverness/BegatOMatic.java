@@ -54,8 +54,8 @@ public class BegatOMatic implements Runnable {
     String geneology = System.getProperty(DKEY);
 
     //loop through each generation
-    int verseNum = 9;
-    for (String newGeneration : geneology.split(":")) {
+    int verseNum = DEFAULT_STARTVERSE;
+    for (String newGeneration : geneology.split(DEFAULT_RECORD_SEPARATOR)) {
       //display verses for generation
       verseNum = displayVerses(newGeneration, verseNum);  
     } 
@@ -76,7 +76,7 @@ public class BegatOMatic implements Runnable {
 
     //parse the data entered
     int i = 0;
-    for (String nextWord : dataString.split(",")) {
+    for (String nextWord : dataString.split(DEFAULT_FIELD_SEPARATOR)) {
       //if we are need the verse number
       if (i == 0 || i == 4 || i == 6) {
         //add the verse number
